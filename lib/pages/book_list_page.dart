@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import '../model/book.dart';  // 记得改成你的实际路径
-import 'book_detail_page.dart';  // 记得改成你的实际路径
-import '../widgets/book_cover.dart'; // 记得改成你的实际路径
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../model/book.dart';   
+import 'book_detail_page.dart';  
+import '../widgets/book_cover.dart'; 
+import 'booklist/book_list_cubit.dart';
+import 'booklist/book_list_state.dart';
 
 class BookListPage extends StatelessWidget {
   const BookListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    List<Book> bookList = List.generate(4, (index) {
-      return Book.createMockBook();
-    });
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -35,14 +34,14 @@ class BookListPage extends StatelessWidget {
                 const SizedBox(width: 10),
                 FilledButton(
                   onPressed: () {
-                    print('Sort by Author');
+                    context.read<BookListCubit>().sortByAuthor();
                   },
                   child: const Text('Author'),
                 ),
                 const SizedBox(width: 10),
                 FilledButton(
                   onPressed: () {
-                    print('Sort by Title');
+                    context.read<BookListCubit>().sortByTitle();
                   },
                   child: const Text('Title'),
                 ),
@@ -53,28 +52,64 @@ class BookListPage extends StatelessWidget {
             const SizedBox(height: 16),
 
             // Book List
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  ...bookList.expand((book) => [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => BookDetailPage(book: book),
+            BlocBuilder<BookListCubit, BookListState>(
+              builder: (context, state) {
+                if (state is BookListLoading) {
+                  return _buildShimmerList(); // ✅ 这里显示加载动画
+                } else if (state is BookListLoaded) {
+                  final bookList = state.books;
+                  if (bookList.isEmpty) {
+                    return const Center(child: Text('No books available'));
+                  }
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ...bookList.expand((book) => [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BookDetailPage(book: book),
+                                ),
+                              );
+                            },
+                            child: BookCover(
+                              key: ValueKey(book.uid),
+                              book: book),
                           ),
-                        );
-                      },
-                      child: BookCover(book: book),
+                          const SizedBox(width: 15),
+                        ]),
+                      ],
                     ),
-                    const SizedBox(width: 15), // space between books
-                  ]),
-                ],
-              ),
+                  );
+                } else {
+                  return const SizedBox(); // ✅ 兜底：防止意外没有返回 Widget
+                }
+              },
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  // 加一个简单的 shimmer loading 样子
+  Widget _buildShimmerList() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: List.generate(4, (index) => 
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            width: 80,
+            height: 120,
+            decoration: BoxDecoration(
+              color: Colors.grey.shade300,
+              borderRadius: BorderRadius.circular(8),
+            ),
+          )
         ),
       ),
     );

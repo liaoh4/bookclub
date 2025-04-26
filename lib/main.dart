@@ -1,9 +1,15 @@
 import 'pages/book_list_page.dart';
 import 'pages/book_detail_page.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'pages/booklist/book_list_cubit.dart';
 void main() {
-  runApp(const MyApp());
+  runApp(
+    BlocProvider(
+      create: (_) => BookListCubit(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
