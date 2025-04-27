@@ -15,8 +15,6 @@ class BookDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
    
-
-  
     return Scaffold(
       appBar: AppBar( 
         centerTitle: true,
@@ -30,7 +28,7 @@ class BookDetailPage extends StatelessWidget {
       body: Container(
       padding: const EdgeInsets.all(8),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start, // 封面和文字顶部对齐
+        crossAxisAlignment: CrossAxisAlignment.start, 
         children: [
           // coverImage
           Image.asset(
@@ -39,7 +37,7 @@ class BookDetailPage extends StatelessWidget {
             height: 360,
             fit: BoxFit.cover,
           ),
-          const SizedBox(height: 16), // 封面和文字之间的间距
+          const SizedBox(height: 16), 
           
           // details of the book
           Expanded(

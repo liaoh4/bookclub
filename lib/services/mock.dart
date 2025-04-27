@@ -25,13 +25,13 @@ class Mock {
 
   static String introduction() {
     return "${title()} is written by ${author()} in 1990\n"
-    "It is a 1936 novel writte by"
-    "Margaret Mitchell and a 1939 film adaptation starring Vivien"
-    "Leigh and Clark Gable. The novel is a sweeping epic ro-"
-    "mance set in the American South during and after the Civil"
+    "It is a 1936 novel writte by "
+    "Margaret Mitchell and a 1939 film adaptation starring Vivien "
+    "Leigh and Clark Gable. The novel is a sweeping epic "
+    "romance set in the American South during and after the Civil "
     "War, focusing on the life of Scarlett O'Hara and her relation"
-    "ships with Ashley Wilkes and Rhett Butler. The film adaptation is a highly ac"
-    "claimed and popular movie that brought the story to a wider audience. ";
+    "ships with Ashley Wilkes and Rhett Butler. The film adaptation is a highly "
+    "acclaimed and popular movie that brought the story to a wider audience. ";
   }
 
   static String uid() {

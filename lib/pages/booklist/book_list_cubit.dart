@@ -15,11 +15,11 @@ class BookListCubit extends Cubit<BookListState> {
   void sortByAuthor() {
     final currentState = state;
     if (currentState is BookListLoaded) {
-      emit(BookListLoading()); // 👈 显示Loading
+      emit(BookListLoading()); // show Loading
       final sortedList = List<Book>.from(currentState.books)
         ..sort((a, b) => a.author.compareTo(b.author));
-      Future.delayed(const Duration(milliseconds: 300), () { // 👈 加一点延迟，效果更自然
-        emit(BookListLoaded(sortedList));
+      Future.delayed(const Duration(milliseconds: 300), () { //delay animation
+        emit(BookListLoaded(sortedList,sortType: SortType.author));
       });
     }
   }
@@ -31,7 +31,7 @@ class BookListCubit extends Cubit<BookListState> {
       final sortedList = List<Book>.from(currentState.books)
         ..sort((a, b) => a.title.compareTo(b.title));
       Future.delayed(const Duration(milliseconds: 300), () {
-        emit(BookListLoaded(sortedList));
+        emit(BookListLoaded(sortedList,sortType: SortType.title));
       });
     }
   }
